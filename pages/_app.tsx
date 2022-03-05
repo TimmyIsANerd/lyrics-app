@@ -7,7 +7,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <>
       <Head>
-        <title>RapidAPI Project - Lyrics App</title>
+        <title>Lyrics App - Rapid API Project</title>
       </Head>
       <Component {...pageProps} />
     </>
