@@ -6,5 +6,9 @@
 Preview the live version on [Vercel](https://rapid-lyrics-search-app.vercel.app/):
 ![Lyric Search App](https://adefeyitimi.netlify.app/static/media/rapidlyrics.3ec1b833.png)
 
-## Check Out My Portfolio
+## Check Out My Socials and Say Hello
+[Twitter](https://twitter.com/TimmyIsANerd_)
+[Facebook](https://facebook.com/adefeyitimi1123)
+
+## My Portfolio Page
 [Adefeyitimi Adeyeloja](https://adefeyitimi.netlify.app)
