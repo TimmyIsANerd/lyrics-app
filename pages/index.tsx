@@ -1,16 +1,18 @@
 import { useState } from "react"
 import axios from 'axios'
+import type { NextPage } from "next";
 
-export default function Home() {
+const Home: NextPage = () => {
 
   const [title, setTitle] = useState('Marshmello'); // Stores the input title by the user, with the default value being "Marshmello"
   const [searchResults, setSearchResults] = useState<any[] | null>(null) // Stores the search results returned by the API
-  const [lyrics, setLyrics] = useState<any>(null) // Stores the lyrics returned by the API.
+  const [lyrics, setLyrics] = useState<any | null>(null) // Stores the lyrics returned by the API.
   const [loading, setLoading] = useState(false); // Loading State
 
 
   // Get Search Results
-  const getResults = async () => {
+  const getResults = async (e: any) => {
+    e.preventDefault();
     try {
       setLoading(true);
       const res = await axios.get('api/search/', {
@@ -58,16 +60,12 @@ export default function Home() {
       <form
         action=""
         className="sm:mx-auto mt-20 justify-center sm:w-full sm:flex"
-        onSubmit={e => {
-          e.preventDefault(); // Trigger the getResults function
-          e.stopPropagation();
-          getResults();
-        }}
       >
         <input
           type="text"
           className="flex w-full sm:w-1/3 rounded-lg px-5 py-3 text-base text-background font-semibold focus:outline-none focus:ring-2 focus:ring-active"
           placeholder="Enter a track or artist name eg: Marshmello"
+          // value={title}
           onChange={e => {
             setTitle(e.target.value); // Store input value;
             setSearchResults(null); // Remove previous respons
@@ -76,48 +74,53 @@ export default function Home() {
         />
 
         <div className="mt-4 sm:mt-0 sm:ml-3">
-          <button className="block w-full rounded-lg px-5 py-3 bg-active text-base text-primary font-bold hover:text-active hover:bg-primary sm:px-10" type="submit">
+          <button className="block w-full rounded-lg px-5 py-3 bg-active text-base text-primary font-bold hover:text-active hover:bg-primary sm:px-10" type="submit"
+            onClick={getResults}
+          >
             {loading ? <>Loading..</> : <>Search</>}
           </button>
         </div>
       </form>
+
       {searchResults && (
         <div className="mt-10">
           <div className="mt-6 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
             {searchResults.map(song => {
-              <div key={song.result.id} className="pt-6">
-                <div className="flow-root bg-light rounded-lg px-4 pb-8">
-                  <div className="mt-6">
-                    <div className="flex items-center justify-center">
-                      <span className="p-2">
-                        <img
-                          src={
-                            song.result.song_art_image_thumbnail_url
-                          }
-                          className="w-full h-full rounded-lg"
-                          alt={song.result.song_art_image_thumbnail_url}
-                        />
-                      </span>
-                    </div>
-                    <div className="text-center justify-center items-center">
-                      <h3 className="mt-4 text-lg font-bold w-full break-words overflow-x-auto text-primary tracking-tight">
-                        {song.result.title}
-                      </h3>
-                      <span className="mt-2 text-sm text-secondary block">
-                        {song.result.artist_names}
-                      </span>
-                      <button
-                        className="mt-5 text-md text-active"
-                        onClick={() => {
-                          getLyrics(song.result.id);
-                        }}
-                      >
-                        Get Lyrics &rarr;
-                      </button>
+              return (
+                <div key={song.result.id} className="pt-6">
+                  <div className="flow-root bg-light rounded-lg px-4 pb-8">
+                    <div className="mt-6">
+                      <div className="flex items-center justify-center">
+                        <span className="p-2">
+                          <img
+                            src={
+                              song.result.song_art_image_thumbnail_url
+                            }
+                            className="w-full h-full rounded-lg"
+                            alt={song.result.song_art_image_thumbnail_url}
+                          />
+                        </span>
+                      </div>
+                      <div className="text-center justify-center items-center">
+                        <h3 className="mt-4 text-lg font-bold w-full break-words overflow-x-auto text-primary tracking-tight">
+                          {song.result.title}
+                        </h3>
+                        <span className="mt-2 text-sm text-secondary block">
+                          {song.result.artist_names}
+                        </span>
+                        <button
+                          className="mt-5 text-md text-active"
+                          onClick={() => {
+                            getLyrics(song.result.id);
+                          }}
+                        >
+                          Get Lyrics &rarr;
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
+              )
             })}
           </div>
         </div>
@@ -150,3 +153,5 @@ export default function Home() {
     </div>
   )
 }
+
+export default Home
